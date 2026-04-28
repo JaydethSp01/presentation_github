@@ -384,9 +384,8 @@
         }
 
         .flist li {
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
+            position: relative;
+            padding-left: 20px;
             margin-bottom: 10px;
             color: var(--muted);
             font-size: 0.97rem;
@@ -396,8 +395,9 @@
         .flist li::before {
             content: '▸';
             color: var(--orange);
-            flex-shrink: 0;
-            margin-top: 2px;
+            position: absolute;
+            left: 0;
+            top: 0;
         }
 
         .flist.blue li::before {
