@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git & GitHub — Despliegues Continuos 15B</title>
+    <meta name="description"
+        content="Presentación interactiva sobre Git y GitHub. Control de versiones, colaboración global y despliegue continuo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- Cursor -->
+    <div id="cur-dot"></div>
+    <div id="cur-ring"></div>
+
+    <!-- Progress -->
+    <div id="progress"></div>
+
+    <!-- Nav Arrows -->
+    <button id="nav-prev" aria-label="Anterior">&#8592;</button>
+    <button id="nav-next" aria-label="Siguiente">&#8594;</button>
+
+    <!-- Dots -->
+    <div id="dots"></div>
+
+    <!-- Counter -->
+    <div id="counter"><span id="cur-num">1</span> / <span id="tot-num">1</span></div>
+
+    <!-- ===================== SLIDES ===================== -->
+    <div id="slider">
+
+        <!-- ===== SLIDE 0: HERO ===== -->
+        <div class="slide active" id="slide-0">
+            <canvas id="hero-canvas"></canvas>
+            <div class="slide-inner">
+                <div class="slide-tag orange">✦ Despliegues Continuos · Grupo 15B</div>
+                <h1>Git <span class="or">&</span><br>GitHub</h1>
+                <p style="font-size:1.2rem; max-width:620px; margin: 16px auto 0;">El lenguaje secreto del desarrollo
+                    moderno. Control de versiones, colaboración global y despliegue continuo.</p>
+                <div class="hero-names">
+                    <div class="hero-name">Daniel Arturo Bolivar Verano</div>
+                    <div class="hero-name">Bryam Stevens Villalba Culma</div>
+                    <div class="hero-name">Fabian Steven Perilla Suarez</div>
+                    <div class="hero-name">Jaydeth Ignacio Simarra Polo</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 1: ¿QUÉ ES GIT? ===== -->
+        <div class="slide" id="slide-1">
+            <div class="slide-inner">
+                <div class="slide-tag orange">01 — Git</div>
+                <h2>¿Qué es <span class="or">Git</span>?</h2>
+                <div class="two-col" style="margin-top:28px;">
+                    <div>
+                        <p>Git es un <strong>sistema de control de versiones DISTRIBUIDO</strong>, creado en 2005 por
+                            <strong>Linus Torvalds</strong> para gestionar el kernel de Linux.</p>
+                        <ul class="flist" style="margin-top:16px;">
+                            <li>Funciona <strong>100% localmente</strong>. Sin internet puedes hacer commits, ver
+                                historial y crear ramas.</li>
+                            <li>Cada desarrollador tiene una <strong>copia completa</strong> del repositorio con todo el
+                                historial.</li>
+                            <li>Usa funciones <strong>hash SHA-1</strong> para garantizar que el historial nunca se
+                                corrompa.</li>
+                            <li>No guarda <em>diferencias</em> entre archivos — guarda <strong>snapshots
+                                    completos</strong> del proyecto.</li>
+                        </ul>
+                        <div class="hbox" style="margin-top:20px;">
+                            <strong>Concepto clave:</strong> Git no necesita un servidor central. Si GitHub desaparece
+                            mañana, tu historial completo sigue viviendo en tu máquina.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card orange-accent" style="text-align:center; padding:40px 20px;">
+                            <div class="stat-num">2005</div>
+                            <div class="stat-lbl">Año de Creación</div>
+                            <p style="margin-top:16px; font-size:0.9rem;">Linus Torvalds lo construyó en <strong
+                                    style="color:var(--orange)">10 días</strong> para reemplazar el sistema que usaba el
+                                kernel de Linux.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 2: CARACTERÍSTICAS GIT ===== -->
+        <div class="slide" id="slide-2">
+            <div class="slide-inner">
+                <div class="slide-tag orange">01 — Git</div>
+                <h2>Características de <span class="or">Git</span></h2>
+                <div class="three-col" style="margin-top:28px;">
+                    <div class="card">
+                        <div class="card-icon">🌿</div>
+                        <h3>Ramas (Branches)</h3>
+                        <p>Líneas paralelas de desarrollo. Puedes tener una rama <code>main</code> estable y una
+                            <code>feature/login</code> experimental <em>al mismo tiempo</em>.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📸</div>
+                        <h3>Commits = Snapshots</h3>
+                        <p>Cada commit guarda el estado completo del proyecto con <strong>autor, fecha y
+                                mensaje</strong>. Puedes volver a cualquier punto de la historia.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔀</div>
+                        <h3>Merge inteligente</h3>
+                        <p>Git une cambios de ramas distintas automáticamente. Si hay conflictos, te avisa exactamente
+                            en qué línea y te deja resolverlos sin perder nada.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">⚡</div>
+                        <h3>Alta velocidad</h3>
+                        <p>Commit, branch, merge — todo ocurre localmente, sin llamadas de red. Git comprime los datos
+                            eficientemente con <strong>packfiles</strong>.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔐</div>
+                        <h3>Integridad SHA</h3>
+                        <p>Cada objeto en Git tiene un hash único. Es <strong>imposible modificar</strong> el historial
+                            sin que Git lo detecte.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📴</div>
+                        <h3>Trabajo offline</h3>
+                        <p>No necesitas internet para hacer <code>commit</code>, revisar <code>log</code> o moverte
+                            entre ramas. Sincronizas cuando quieras.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 3: ¿QUÉ ES GITHUB? ===== -->
+        <div class="slide" id="slide-3">
+            <div class="slide-inner">
+                <div class="slide-tag blue">02 — GitHub</div>
+                <h2>¿Qué es <span class="bl">GitHub</span>?</h2>
+                <div class="two-col" style="margin-top:28px;">
+                    <div class="card blue-accent" style="text-align:center; padding:40px 20px;">
+                        <div class="stat-num" style="color: var(--blue);">100M+</div>
+                        <div class="stat-lbl" style="color: var(--blue);">Desarrolladores</div>
+                        <p style="margin-top:16px; font-size:0.9rem;">La plataforma de código más grande del mundo.
+                            Adquirida por <strong style="color:var(--blue)">Microsoft</strong> en 2018 por $7.5 mil
+                            millones.</p>
+                    </div>
+                    <div>
+                        <p><strong>GitHub NO es Git.</strong> Es una plataforma en la nube construida <em>sobre</em>
+                            Git. Lanzada en 2008, es la red social de los desarrolladores.</p>
+                        <ul class="flist blue" style="margin-top:16px;">
+                            <li>Alojamiento de repositorios en la <strong>nube</strong></li>
+                            <li><strong>Pull Requests</strong> — revisión formal de código antes de integrar</li>
+                            <li><strong>Issues</strong> — registro de bugs, tareas y mejoras</li>
+                            <li><strong>GitHub Actions</strong> — automatización de tests y despliegues</li>
+                            <li><strong>GitHub Pages</strong> — hosting gratuito de sitios estáticos</li>
+                            <li><strong>GitHub Copilot</strong> — asistente de IA para escribir código</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 4: GIT vs GITHUB ===== -->
+        <div class="slide" id="slide-4">
+            <div class="slide-inner">
+                <div class="slide-tag green">03 — Diferencias</div>
+                <h2>Git <span class="or">vs</span> GitHub</h2>
+                <div class="vs-wrap">
+                    <div class="vs-card git-card">
+                        <h3><span class="or">Git</span></h3>
+                        <p style="font-size:0.9rem; margin-bottom:16px;">La herramienta. La navaja.</p>
+                        <ul class="flist">
+                            <li>Software instalado en tu PC</li>
+                            <li>Funciona sin internet (local)</li>
+                            <li>Interfaz de línea de comandos</li>
+                            <li>100% gratuito y open source</li>
+                            <li>Gestiona versiones del código</li>
+                            <li>Creado en 2005 por Torvalds</li>
+                        </ul>
+                    </div>
+                    <div class="vs-mid">VS</div>
+                    <div class="vs-card gh-card">
+                        <h3><span class="bl">GitHub</span></h3>
+                        <p style="font-size:0.9rem; margin-bottom:16px;">El ecosistema. La plataforma.</p>
+                        <ul class="flist blue">
+                            <li>Servicio web en la nube</li>
+                            <li>Requiere conexión a internet</li>
+                            <li>Interfaz gráfica web + CLI</li>
+                            <li>Plan gratuito + planes de pago</li>
+                            <li>Colaboración, CI/CD, hosting</li>
+                            <li>Fundado en 2008, comprado por Microsoft</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="hbox" style="margin-top:24px;">
+                    <strong>Analogía:</strong> Git es el motor de un carro. GitHub es la autopista, las gasolineras y el
+                    GPS. Puedes tener el motor sin la autopista, pero no la autopista sin el motor.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 5: REPOSITORIO ===== -->
+        <div class="slide" id="slide-5">
+            <div class="slide-inner">
+                <div class="slide-tag orange">04 — Repositorio</div>
+                <h2>El <span class="or">Repositorio</span> de Versiones</h2>
+                <div class="two-col" style="margin-top:24px; align-items:center;">
+                    <div>
+                        <p>Un repositorio es la carpeta donde Git vigila absolutamente todo. Contiene el historial
+                            completo del proyecto desde el primer commit.</p>
+                        <ul class="flist" style="margin-top:14px;">
+                            <li><strong>Commits:</strong> Cada guardado tiene hash único, autor, fecha y mensaje
+                                descriptivo.</li>
+                            <li><strong>Branches:</strong> Ramas paralelas — <code
+                                    style="color:var(--blue)">main</code>, <code
+                                    style="color:var(--orange)">develop</code>, <code
+                                    style="color:var(--green)">feature/x</code>.</li>
+                            <li><strong>Tags:</strong> Marcadores en puntos importantes. Ej: <code>v1.0.0</code>.</li>
+                            <li><strong>README.md:</strong> La carta de presentación del proyecto.</li>
+                            <li><strong>.gitignore:</strong> Lista de lo que Git NO debe rastrear (contraseñas,
+                                <code>node_modules</code>, builds).</li>
+                        </ul>
+                    </div>
+                    <div class="tree-wrap">
+                        <svg viewBox="0 0 280 340" width="260" height="320" style="overflow:visible;">
+                            <!-- Main line -->
+                            <line x1="60" y1="300" x2="60" y2="20" stroke="var(--blue)" stroke-width="3"
+                                stroke-dasharray="6,3" />
+                            <!-- Feature branch -->
+                            <path d="M 60 220 Q 60 180 160 180 Q 160 140 60 120" fill="none" stroke="var(--orange)"
+                                stroke-width="3" stroke-dasharray="6,3" />
+                            <!-- Hotfix branch -->
+                            <path d="M 60 150 Q 60 110 200 110 L 200 80" fill="none" stroke="var(--green)"
+                                stroke-width="3" stroke-dasharray="6,3" />
+
+                            <!-- Main commits -->
+                            <circle cx="60" cy="300" r="9" fill="var(--bg)" stroke="var(--blue)" stroke-width="3" />
+                            <circle cx="60" cy="220" r="9" fill="var(--bg)" stroke="var(--blue)" stroke-width="3" />
+                            <circle cx="60" cy="120" r="9" fill="var(--bg)" stroke="var(--blue)" stroke-width="3" />
+                            <circle cx="60" cy="20" r="9" fill="var(--blue)" stroke="var(--blue)" stroke-width="3" />
+
+                            <!-- Feature commits -->
+                            <circle cx="160" cy="180" r="8" fill="var(--bg)" stroke="var(--orange)" stroke-width="3" />
+                            <circle cx="160" cy="140" r="8" fill="var(--orange)" stroke="var(--orange)"
+                                stroke-width="3" />
+
+                            <!-- Hotfix commits -->
+                            <circle cx="200" cy="110" r="8" fill="var(--bg)" stroke="var(--green)" stroke-width="3" />
+                            <circle cx="200" cy="80" r="8" fill="var(--green)" stroke="var(--green)" stroke-width="3" />
+
+                            <!-- Labels -->
+                            <text x="76" y="305" fill="var(--muted)" font-family="monospace" font-size="10">init
+                                commit</text>
+                            <text x="76" y="225" fill="var(--muted)" font-family="monospace" font-size="10">feat:
+                                base</text>
+                            <text x="76" y="45" fill="var(--blue)" font-family="monospace" font-size="11"
+                                font-weight="bold">main ●</text>
+                            <text x="170" y="145" fill="var(--orange)" font-family="monospace"
+                                font-size="10">feature/login</text>
+                            <text x="212" y="85" fill="var(--green)" font-family="monospace"
+                                font-size="10">hotfix/bug</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 6: COMPARATIVA vs COMPAÑEROS ===== -->
+        <div class="slide" id="slide-6">
+            <div class="slide-inner">
+                <div class="slide-tag orange">05 — Comparativa</div>
+                <h2>GitHub gana <span class="or">¿por qué?</span></h2>
+                <p style="margin-bottom:20px;">Nuestros compañeros exponen otras plataformas. Acá está por qué <strong
+                        style="color:var(--text)">GitHub es la elección número 1</strong> del mundo frente a cada una.
+                </p>
+
+                <!-- Tabla comparativa -->
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; font-size:0.88rem;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--orange);">
+                                <th
+                                    style="text-align:left; padding:10px 14px; font-family:var(--font-code); color:var(--muted); font-weight:600;">
+                                    Categoría</th>
+                                <th
+                                    style="padding:10px 14px; font-family:var(--font-code); color:var(--text); background:rgba(249,115,22,0.08); border-radius:8px 8px 0 0;">
+                                    ⭐ GitHub</th>
+                                <th
+                                    style="padding:10px 14px; font-family:var(--font-code); color:#fc6d26; text-align:center;">
+                                    GitLab</th>
+                                <th
+                                    style="padding:10px 14px; font-family:var(--font-code); color:#2684FF; text-align:center;">
+                                    Bitbucket</th>
+                                <th
+                                    style="padding:10px 14px; font-family:var(--font-code); color:#60a5fa; text-align:center;">
+                                    Gitea</th>
+                                <th
+                                    style="padding:10px 14px; font-family:var(--font-code); color:#a78bfa; text-align:center;">
+                                    Forgejo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid var(--border);">
+                                <td
+                                    style="padding:10px 14px; color:var(--muted); font-family:var(--font-code); font-size:0.8rem;">
+                                    Comunidad</td>
+                                <td style="padding:10px 14px; text-align:center; background:rgba(249,115,22,0.05);">
+                                    <span style="color:var(--green);">100M+ devs 🏆</span></td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">~30M devs</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Corporativa</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Pequeña</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Muy pequeña</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border);">
+                                <td
+                                    style="padding:10px 14px; color:var(--muted); font-family:var(--font-code); font-size:0.8rem;">
+                                    CI/CD</td>
+                                <td style="padding:10px 14px; text-align:center; background:rgba(249,115,22,0.05);">
+                                    <span style="color:var(--green);">Actions 🏆</span></td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">GitLab CI (muy
+                                    potente)</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Pipelines</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Básico / externo
+                                </td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Básico / externo
+                                </td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border);">
+                                <td
+                                    style="padding:10px 14px; color:var(--muted); font-family:var(--font-code); font-size:0.8rem;">
+                                    Open Source</td>
+                                <td style="padding:10px 14px; text-align:center; background:rgba(249,115,22,0.05);">
+                                    <span style="color:var(--green);">Rey del OS 🏆</span></td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Bueno</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--red);">Casi nulo</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Auto-hospedado
+                                </td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Auto-hospedado
+                                </td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border);">
+                                <td
+                                    style="padding:10px 14px; color:var(--muted); font-family:var(--font-code); font-size:0.8rem;">
+                                    Hosting gratis</td>
+                                <td style="padding:10px 14px; text-align:center; background:rgba(249,115,22,0.05);">
+                                    <span style="color:var(--green);">Pages 🏆</span></td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">GitLab Pages</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--red);">No</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--red);">No (self-hosted)
+                                </td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--red);">No (self-hosted)
+                                </td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border);">
+                                <td
+                                    style="padding:10px 14px; color:var(--muted); font-family:var(--font-code); font-size:0.8rem;">
+                                    IA integrada</td>
+                                <td style="padding:10px 14px; text-align:center; background:rgba(249,115,22,0.05);">
+                                    <span style="color:var(--green);">Copilot 🏆</span></td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">GitLab Duo</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--red);">No</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--red);">No</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--red);">No</td>
+                            </tr>
+                            <tr>
+                                <td
+                                    style="padding:10px 14px; color:var(--muted); font-family:var(--font-code); font-size:0.8rem;">
+                                    Privacidad</td>
+                                <td
+                                    style="padding:10px 14px; text-align:center; background:rgba(249,115,22,0.05); color:var(--muted);">
+                                    Microsoft (nube)</td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Nube o self-hosted
+                                </td>
+                                <td style="padding:10px 14px; text-align:center; color:var(--muted);">Atlassian (nube)
+                                </td>
+                                <td style="padding:10px 14px; text-align:center;"><span
+                                        style="color:var(--green);">Total 🏆</span></td>
+                                <td style="padding:10px 14px; text-align:center;"><span
+                                        style="color:var(--green);">Total 🏆</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="hbox" style="margin-top:16px;">
+                    <strong>Conclusión:</strong> GitHub domina en comunidad, ecosistema, IA y adopción global. GitLab es
+                    rival serio en CI/CD. Bitbucket vive en el mundo Atlassian. Gitea y Forgejo son ideales solo cuando
+                    la privacidad absoluta es prioritaria.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 7: PRÁCTICA PARTE 1 ===== -->
+        <div class="slide" id="slide-7">
+            <div class="slide-inner">
+                <div class="slide-tag green">06 — Práctica</div>
+                <h2>Flujo Completo: <span class="gr">Pasos 1–3</span></h2>
+                <p style="margin-bottom:24px;">Creamos una app en Node.js desde cero y la subimos a GitHub. Proyecto
+                    real, comandos reales.</p>
+                <div class="workflow">
+                    <div class="wstep">
+                        <div class="wstep-left">
+                            <div class="wstep-num">1</div>
+                            <div class="wstep-line"></div>
+                        </div>
+                        <div class="wstep-body">
+                            <h4>Configuración inicial (una sola vez)</h4>
+                            <div class="terminal">
+                                <div class="term-bar"><span class="td-red term-dot"></span><span
+                                        class="td-yellow term-dot"></span><span class="td-green term-dot"></span><span
+                                        class="term-title">bash</span></div>
+                                <div class="term-body">
+                                    <div><span class="c-cmd">git</span> config <span class="c-flag">--global</span>
+                                        user.name <span class="c-str">"Tu Nombre"</span></div>
+                                    <div><span class="c-cmd">git</span> config <span class="c-flag">--global</span>
+                                        user.email <span class="c-str">"tu@email.com"</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wstep">
+                        <div class="wstep-left">
+                            <div class="wstep-num">2</div>
+                            <div class="wstep-line"></div>
+                        </div>
+                        <div class="wstep-body">
+                            <h4>Crear el repositorio local</h4>
+                            <div class="terminal">
+                                <div class="term-bar"><span class="td-red term-dot"></span><span
+                                        class="td-yellow term-dot"></span><span class="td-green term-dot"></span><span
+                                        class="term-title">bash</span></div>
+                                <div class="term-body">
+                                    <div><span class="c-cmd">git</span> <span class="c-fn">init</span> mi-app-node
+                                        &nbsp;&nbsp;<span class="c-cm"># Crea la carpeta y activa Git</span></div>
+                                    <div><span class="c-fn">cd</span> mi-app-node</div>
+                                    <div><span class="c-cmd">npm</span> <span class="c-fn">init</span> <span
+                                            class="c-flag">-y</span>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-cm">#
+                                            Genera package.json automáticamente</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wstep">
+                        <div class="wstep-left">
+                            <div class="wstep-num">3</div>
+                            <div class="wstep-line"></div>
+                        </div>
+                        <div class="wstep-body">
+                            <h4>Primer commit (primer snapshot)</h4>
+                            <div class="terminal">
+                                <div class="term-bar"><span class="td-red term-dot"></span><span
+                                        class="td-yellow term-dot"></span><span class="td-green term-dot"></span><span
+                                        class="term-title">bash</span></div>
+                                <div class="term-body">
+                                    <div><span class="c-cmd">git</span> <span class="c-fn">add</span> .
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                            class="c-cm"># "." = agrega TODOS los archivos al staging</span></div>
+                                    <div><span class="c-cmd">git</span> <span class="c-fn">commit</span> <span
+                                            class="c-flag">-m</span> <span class="c-str">"feat: inicializar proyecto
+                                            Node.js"</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 8: PRÁCTICA PARTE 2 ===== -->
+        <div class="slide" id="slide-8">
+            <div class="slide-inner">
+                <div class="slide-tag green">06 — Práctica</div>
+                <h2>Flujo Completo: <span class="gr">Pasos 4–6</span></h2>
+                <div class="workflow">
+                    <div class="wstep">
+                        <div class="wstep-left">
+                            <div class="wstep-num">4</div>
+                            <div class="wstep-line"></div>
+                        </div>
+                        <div class="wstep-body">
+                            <h4>Conectar y subir a GitHub</h4>
+                            <div class="terminal">
+                                <div class="term-bar"><span class="td-red term-dot"></span><span
+                                        class="td-yellow term-dot"></span><span class="td-green term-dot"></span><span
+                                        class="term-title">bash</span></div>
+                                <div class="term-body">
+                                    <div><span class="c-cmd">git</span> remote add origin
+                                        https://github.com/usuario/mi-app.git</div>
+                                    <div><span class="c-cmd">git</span> <span class="c-fn">branch</span> <span
+                                            class="c-flag">-M</span> main &nbsp;&nbsp;&nbsp;<span class="c-cm">#
+                                            Renombra rama a 'main'</span></div>
+                                    <div><span class="c-cmd">git</span> <span class="c-fn">push</span> <span
+                                            class="c-flag">-u</span> origin main &nbsp;<span class="c-cm"># -u enlaza
+                                            local con remoto</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wstep">
+                        <div class="wstep-left">
+                            <div class="wstep-num">5</div>
+                            <div class="wstep-line"></div>
+                        </div>
+                        <div class="wstep-body">
+                            <h4>Trabajar en una nueva rama (sin romper main)</h4>
+                            <div class="terminal">
+                                <div class="term-bar"><span class="td-red term-dot"></span><span
+                                        class="td-yellow term-dot"></span><span class="td-green term-dot"></span><span
+                                        class="term-title">bash</span></div>
+                                <div class="term-body">
+                                    <div><span class="c-cmd">git</span> checkout <span class="c-flag">-b</span>
+                                        feature/login &nbsp;<span class="c-cm"># Crea y cambia a nueva rama</span></div>
+                                    <div><span class="c-cm"># ... escribes el módulo de login ...</span></div>
+                                    <div><span class="c-cmd">git</span> <span class="c-fn">add</span> . && <span
+                                            class="c-cmd">git</span> <span class="c-fn">commit</span> <span
+                                            class="c-flag">-m</span> <span class="c-str">"feat: módulo
+                                            autenticación"</span></div>
+                                    <div><span class="c-cmd">git</span> <span class="c-fn">push</span> origin
+                                        feature/login</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wstep">
+                        <div class="wstep-left">
+                            <div class="wstep-num">6</div>
+                        </div>
+                        <div class="wstep-body">
+                            <h4>Pull Request en GitHub → revisión → merge</h4>
+                            <div class="hbox green">
+                                En GitHub vas a tu repositorio, aparece un botón <strong>"Compare & pull
+                                    request"</strong>. Describes los cambios, un compañero los revisa, y al aprobar se
+                                hace <strong>merge</strong> a main. El código nunca llega sucio a producción.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 9: CI/CD ===== -->
+        <div class="slide" id="slide-9">
+            <div class="slide-inner">
+                <div class="slide-tag blue">07 — CI/CD</div>
+                <h2>Integración y Despliegue <span class="bl">Continuo</span></h2>
+                <div class="two-col" style="margin-top:24px; align-items:start;">
+                    <div>
+                        <p><strong>En términos simples:</strong> cada vez que haces <code>git push</code>, GitHub
+                            ejecuta servidores virtuales automáticamente para testear y desplegar tu aplicación.</p>
+                        <ul class="flist blue" style="margin-top:14px;">
+                            <li><strong>Integración Continua (CI):</strong> Ejecuta tests automáticos en cada push. Si
+                                algo falla, el equipo lo sabe antes de llegar a producción.</li>
+                            <li><strong>Despliegue Continuo (CD):</strong> Si los tests pasan, el código se despliega
+                                solo al servidor. Sin intervención manual.</li>
+                            <li><strong>GitHub Pages:</strong> Hosting gratuito para sitios estáticos. Esta presentación
+                                puede vivir ahí.</li>
+                        </ul>
+                        <div class="hbox blue" style="margin-top:16px;">
+                            Los workflows se configuran con archivos <code>.yml</code> dentro de
+                            <code>.github/workflows/</code>
+                        </div>
+                    </div>
+                    <div class="terminal">
+                        <div class="term-bar"><span class="td-red term-dot"></span><span
+                                class="td-yellow term-dot"></span><span class="td-green term-dot"></span><span
+                                class="term-title">.github/workflows/deploy.yml</span></div>
+                        <div class="term-body" style="font-size:0.82rem;">
+                            <pre style="background:transparent;border:none;padding:0;margin:0;"><span class="c-kw">name</span>: CI/CD Pipeline
+<span class="c-kw">on</span>:
+  <span class="c-kw">push</span>:
+    branches: [main]
+
+<span class="c-kw">jobs</span>:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    <span class="c-kw">steps</span>:
+      - <span class="c-kw">uses</span>: actions/checkout@v3
+
+      - <span class="c-kw">name</span>: Setup Node.js
+        <span class="c-kw">uses</span>: actions/setup-node@v3
+        <span class="c-kw">with</span>:
+          node-version: <span class="c-str">'18'</span>
+
+      - <span class="c-kw">run</span>: npm install
+      - <span class="c-kw">run</span>: npm test <span class="c-cm"># ← Tests automáticos</span>
+
+      - <span class="c-kw">name</span>: Deploy to GitHub Pages
+        <span class="c-kw">uses</span>: peaceiris/actions-gh-pages@v3
+        <span class="c-kw">with</span>:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 10: VENTAJAS / DESVENTAJAS ===== -->
+        <div class="slide" id="slide-10">
+            <div class="slide-inner">
+                <div class="slide-tag orange">08 — Análisis</div>
+                <h2>Ventajas <span class="or">&</span> Desventajas</h2>
+                <div class="two-col" style="margin-top:24px;">
+                    <div>
+                        <h3 style="color:var(--green); margin-bottom:16px;">✔ Ventajas de GitHub</h3>
+                        <div class="card green-accent">
+                            <ul class="flist green">
+                                <li><strong>Comunidad global</strong> — más de 100M de devs y millones de proyectos open
+                                    source.</li>
+                                <li><strong>GitHub Actions</strong> — CI/CD sin salir de la plataforma, con miles de
+                                    actions reutilizables.</li>
+                                <li><strong>GitHub Pages</strong> — hosting estático gratuito desde tu repositorio.</li>
+                                <li><strong>Copilot</strong> — IA integrada que sugiere código en tiempo real.</li>
+                                <li><strong>Issues + Projects</strong> — gestión de tareas directamente en el repo.</li>
+                                <li><strong>Plan gratuito generoso</strong> — repositorios públicos y privados
+                                    ilimitados.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="color:var(--red); margin-bottom:16px;">✘ Desventajas de GitHub</h3>
+                        <div class="card" style="border-top:3px solid var(--red);">
+                            <ul class="flist" style="--green: var(--red);">
+                                <li style="color:var(--muted);"><span style="color:var(--red);">▸</span>
+                                    <strong>Dependencia de internet</strong> — si GitHub cae (y ha caído), el equipo se
+                                    detiene.</li>
+                                <li style="color:var(--muted);"><span style="color:var(--red);">▸</span>
+                                    <strong>Privacidad en manos de Microsoft</strong> — tu código vive en servidores de
+                                    terceros.</li>
+                                <li style="color:var(--muted);"><span style="color:var(--red);">▸</span> <strong>Curva
+                                        de aprendizaje</strong> — Git + GitHub juntos pueden abrumar a principiantes.
+                                </li>
+                                <li style="color:var(--muted);"><span style="color:var(--red);">▸</span> <strong>Actions
+                                        avanzados de pago</strong> — minutos de CI/CD se agotan en proyectos grandes.
+                                </li>
+                                <li style="color:var(--muted);"><span style="color:var(--red);">▸</span>
+                                    <strong>Conflictos de merge</strong> — en equipos grandes sin buenas prácticas son
+                                    frecuentes.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 11: FAQ ===== -->
+        <div class="slide" id="slide-11">
+            <div class="slide-inner">
+                <div class="slide-tag blue">09 — FAQ</div>
+                <h2>Preguntas <span class="bl">Frecuentes</span></h2>
+                <div class="accordion" style="margin-top:28px;">
+                    <div class="acc-item">
+                        <button class="acc-btn">¿Git y GitHub son lo mismo? <span class="acc-icon">+</span></button>
+                        <div class="acc-content">
+                            <p><strong>NO.</strong> Git es la herramienta de control de versiones que funciona en tu PC.
+                                GitHub es la plataforma en la nube que usa Git por debajo. Puedes usar Git sin GitHub,
+                                pero no GitHub sin Git.</p>
+                        </div>
+                    </div>
+                    <div class="acc-item">
+                        <button class="acc-btn">¿Es GitHub gratuito? <span class="acc-icon">+</span></button>
+                        <div class="acc-content">
+                            <p><strong>Sí.</strong> El plan gratuito incluye repositorios públicos y privados
+                                ilimitados, colaboradores, y minutos de Actions. Los planes de pago agregan funciones
+                                avanzadas de seguridad, auditoría y más minutos de CI/CD para empresas.</p>
+                        </div>
+                    </div>
+                    <div class="acc-item">
+                        <button class="acc-btn">¿Qué es un Pull Request? <span class="acc-icon">+</span></button>
+                        <div class="acc-content">
+                            <p>Una "solicitud formal" para integrar código de una rama a otra. Es como decir:
+                                <em>"terminé mi tarea, ¿alguien la revisa antes de subirla a producción?"</em> Facilita
+                                la revisión de código y evita errores en la rama principal.</p>
+                        </div>
+                    </div>
+                    <div class="acc-item">
+                        <button class="acc-btn">¿Puedo usar GitHub sin saber Git? <span
+                                class="acc-icon">+</span></button>
+                        <div class="acc-content">
+                            <p>Técnicamente sí, con la interfaz web o GitHub Desktop. Pero <strong>no es
+                                    recomendable</strong> para un desarrollador profesional. La terminal da poder total:
+                                deshacer commits, resolver conflictos, cherry-pick, rebase... sin ella estás limitado.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="acc-item">
+                        <button class="acc-btn">¿Qué es GitHub Pages? <span class="acc-icon">+</span></button>
+                        <div class="acc-content">
+                            <p>Hosting gratuito para sitios web estáticos (HTML, CSS, JS) directamente desde un
+                                repositorio. Sin servidores propios, sin configuración compleja. Esta presentación puede
+                                desplegarse ahí con un solo clic en Settings → Pages.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SLIDE 12: CIERRE ===== -->
+        <div class="slide" id="slide-12"
+            style="justify-content:center; align-items:center; text-align:center; background: radial-gradient(ellipse at center, rgba(249,115,22,0.07) 0%, transparent 65%);">
+            <canvas id="outro-canvas" style="position:absolute;inset:0;pointer-events:none;"></canvas>
+            <div class="slide-inner"
+                style="position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <div class="slide-tag orange" style="margin: 0 auto 28px;">✦ Conclusión</div>
+                <h1 style="font-size: clamp(2.2rem,4vw,4rem); text-align:center;">
+                    Git controla el código.<br>
+                    <span class="bl">GitHub conecta al mundo.</span>
+                </h1>
+                <p style="max-width:640px; margin: 24px auto 0; font-size:1.05rem; text-align:center;">Un flujo de
+                    trabajo bien aplicado — commits claros, ramas organizadas, Pull Requests revisados y CI/CD
+                    automatizado — garantiza proyectos más seguros, organizados y eficientes.</p>
+                <p style="margin-top:24px; font-family:var(--font-code); font-size:0.8rem; color:var(--muted);">
+                    Despliegues Continuos · Grupo 15B · 2026 · HTML, CSS & JS puro · Listo para GitHub Pages</p>
+            </div>
+        </div>
+
+    </div><!-- /slider -->
+
+    <script src="js/main.js" defer></script>
+</body>
+
+</html>
